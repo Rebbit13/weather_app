@@ -1,14 +1,10 @@
 from pydantic import BaseModel, validator
 
 
-class TownBase(BaseModel):
-    id: int = None
-    created_at: str = None
+class TownCreate(BaseModel):
     name: str
     altitude: float
     longitude: float
-    weather_now: str
-    forecast: str
 
     @validator("altitude")
     def check_altitude(cls, v):
@@ -27,6 +23,17 @@ class TownBase(BaseModel):
         return v
 
 
-class TownCreate(TownBase):
-    weather_now: str = None
-    forecast: str = None
+class TownComplete(BaseModel):
+    id: int
+    created_at: str
+    name: str
+    altitude: float
+    longitude: float
+    weather_now: str
+    forecast: str
+
+
+class TownUpdate(BaseModel):
+    name: str = None
+    altitude: float = None
+    longitude: float = None

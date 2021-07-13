@@ -7,7 +7,7 @@ HEADERS = {
 }
 
 WEATHER_CONDITION = {
-    "clear":"ясно",
+    "clear": "ясно",
     "partly-cloudy": "малооблачно",
     "cloudy": "облачно с прояснениями",
     "overcast": "пасмурно",
