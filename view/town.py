@@ -14,48 +14,51 @@ logging.basicConfig(level='DEBUG', format=LOG_FORMAT)
 logger = logging.getLogger()
 
 
+async def return_404_not_found(town_id):
+    return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
+                        content={"message": f'There is no town with id {town_id}'})
+
+
 @router.get('/api/town/', response_model=TownCreate)
 async def get_all_towns():
-    result = TownLogic.get_all_towns()
+    result = TownLogic.get_all()
     return JSONResponse(status_code=status.HTTP_200_OK,
                         content={"towns": result})
 
 
 @router.post('/api/town/')
 async def create_town(town: TownCreate):
-    town = TownLogic.create_town(town)
+    town_json = TownLogic.create(town)
     return JSONResponse(status_code=status.HTTP_201_CREATED,
-                        content=town.json())
+                        content=town_json)
 
 
 @router.get('/api/town/{town_id}/')
 async def get_town(town_id: int):
-    town = TownLogic.get_town(town_id)
+    town = TownLogic.get(town_id)
     if town:
         return JSONResponse(status_code=status.HTTP_200_OK,
                             content=town.json())
     else:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
-                            content={"message": f'There is no town with id {town_id}'})
+        return return_404_not_found(town_id)
 
 
 @router.put('/api/town/{town_id}/')
 async def update_town(town_id: int, town: TownUpdate):
-    town_updated = TownLogic.update_town(town_id, town)
-    if town_updated:
-        return JSONResponse(status_code=status.HTTP_200_OK,
-                            content=town_updated.json())
+    town = TownLogic.update(town_id, town)
+    if town:
+        return JSONResponse(status_code=status.HTTP_201_CREATED,
+                            content=town.json())
     else:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
-                            content={"message": f'There is no town with id {town_id}'})
+        return return_404_not_found(town_id)
 
 
 @router.delete('/api/town/{town_id}/')
 async def delete_town(town_id):
-    town_updated = TownLogic.delete_town(town_id)
-    if town_updated:
+    town = TownLogic.get(town_id)
+    if town:
+        TownLogic.delete(town_id)
         return JSONResponse(status_code=status.HTTP_200_OK,
                             content={"message": f'Delete town with id {town_id}'})
     else:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
-                            content={"message": f'There is no town with id {town_id}'})
+        return return_404_not_found(town_id)
