@@ -1,13 +1,18 @@
 import logging
 
 from fastapi import APIRouter
+from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette import status
+from starlette.templating import Jinja2Templates
 
+from database.db import engine
 from services.town import TownLogic
 from validation.town import TownCreate, TownUpdate
 
 router = APIRouter()
+templates = Jinja2Templates(directory="templates")
+
 
 LOG_FORMAT = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(level='DEBUG', format=LOG_FORMAT)
@@ -40,7 +45,7 @@ async def get_town(town_id: int):
         return JSONResponse(status_code=status.HTTP_200_OK,
                             content=town.json())
     else:
-        return return_404_not_found(town_id)
+        return await return_404_not_found(town_id)
 
 
 @router.put('/api/town/{town_id}/')
@@ -50,7 +55,7 @@ async def update_town(town_id: int, town: TownUpdate):
         return JSONResponse(status_code=status.HTTP_201_CREATED,
                             content=town.json())
     else:
-        return return_404_not_found(town_id)
+        return await return_404_not_found(town_id)
 
 
 @router.delete('/api/town/{town_id}/')
@@ -61,4 +66,9 @@ async def delete_town(town_id):
         return JSONResponse(status_code=status.HTTP_200_OK,
                             content={"message": f'Delete town with id {town_id}'})
     else:
-        return return_404_not_found(town_id)
+        return await return_404_not_found(town_id)
+
+
+@router.get('/')
+async def get_towns_html(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request, "towns": TownLogic.get_all()})

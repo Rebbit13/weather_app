@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+    <head>
+        <meta charset="utf-8">
+        <title>Погода в наших городах</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Погода в городах</h1>
+            {% for town in towns %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ town.name }}</h5>
+                        <p class="card-text">Координаты: ({{ town.altitude }}, {{ town.longitude }})</p>
+                        <p class="card-text">Погода сейчас: ({{ town.weather_now }})</p>
+                        <p class="card-text">Прогноз: ({{ town.forecast }})</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

@@ -17,7 +17,7 @@ class Town(BaseMixin, Base):
     forecast = Column(String)
 
     def __repr__(self):
-        return {f'Town {self.name}'}
+        return f'Town {self.name}'
 
     def json(self):
         return {"id": self.id,
