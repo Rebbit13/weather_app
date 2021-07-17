@@ -6,7 +6,6 @@ RUN make /app
 WORKDIR /app
 
 RUN pip install --no-cache-dir -r requirements.txt
-RUN alembic revision --autogenerate -m "initial_commit"
-RUN alembic upgrade head
 
-CMD [ "uvicorn", "main:app", "--reload"]
+CMD [ "alembic", "upgrade", "head"]
+CMD [ "uvicorn", "main:app", "--reload", "--host",  "0.0.0.0"]

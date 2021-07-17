@@ -22,4 +22,15 @@ services:
       - ./postgresql/dumps:/code/dumps
       - ./postgresql/data:/var/lib/postgresql/data
 
+  app:
+    build: .
+    ports:
+      - "${APP_PORT}:8000"
+    env_file:
+      - .env
+    links:
+      - "postgres:database"
+    depends_on:
+      - postgres
+      - redis
 
