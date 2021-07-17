@@ -7,5 +7,4 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD [ "alembic", "upgrade", "head"]
-CMD [ "uvicorn", "main:app", "--reload", "--host",  "0.0.0.0"]
+CMD alembic upgrade head && uvicorn main:app --reload --host 0.0.0.0
