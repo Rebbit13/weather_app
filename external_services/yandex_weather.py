@@ -42,7 +42,7 @@ FORECAST_PARTS = {
 
 
 def get_weather(altitude: float, longitude: float):
-    cash = Redis(host="0.0.0.0", port=os.environ['REDIS_PORT'], password=os.environ['REDIS_PASSWORD'])
+    cash = Redis(host="cash", port=os.environ['REDIS_PORT'], password=os.environ['REDIS_PASSWORD'])
     cashed = cash.get(json.dumps({"altitude": altitude, "longitude": longitude}))
     if cashed is None:
         r = requests.get(url=API_YANDEX_URL.format(lat=altitude, lon=longitude, lang=API_YANDEX_LANG),

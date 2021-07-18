@@ -10,7 +10,6 @@ SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@database:{port}/{db}".
     port=os.getenv('POSTGRES_PORT'),
     db=os.getenv('POSTGRES_DB')
 )
-print(SQLALCHEMY_DATABASE_URL)
 
 os.environ['DATABASE_URL'] = SQLALCHEMY_DATABASE_URL
 
