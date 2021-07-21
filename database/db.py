@@ -4,9 +4,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@database:{port}/{db}".format(
+SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{db}".format(
     user=os.getenv('POSTGRES_USER'),
     password=os.getenv('POSTGRES_PASSWORD'),
+    host=os.getenv('APP_DB_HOST'),
     port=os.getenv('POSTGRES_PORT'),
     db=os.getenv('POSTGRES_DB')
 )

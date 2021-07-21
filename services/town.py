@@ -49,15 +49,15 @@ class TownLogic(metaclass=SingletonNaiveMeta):
     @staticmethod
     def update(town_id: int, town: TownName):
         location = get_location(town.name)
-        duplicate = TownLogic.get_duplicate(location.name)
+        duplicate = TownLogic.get_duplicate(location.display_name)
         if duplicate:
             return duplicate
         town_concrete = TownLogic.get(town_id)
         if town_concrete:
-            town_weather = get_formed_weather_data(location.altitude, location.longitude)
-            town = {'name': location.name,
-                    'altitude': location.altitude,
-                    "longitude": location.longitude,
+            town_weather = get_formed_weather_data(location.lat, location.lon)
+            town = {'name': location.display_name,
+                    'altitude': location.lat,
+                    "longitude": location.lon,
                     "weather_now": town_weather['weather_now'],
                     "forecast": town_weather['forecast']}
             session = Session()
@@ -68,13 +68,13 @@ class TownLogic(metaclass=SingletonNaiveMeta):
     @staticmethod
     def create(town: TownName):
         location = get_location(town.name)
-        duplicate = TownLogic.get_duplicate(location.name)
+        duplicate = TownLogic.get_duplicate(location.display_name)
         if duplicate:
             return duplicate.json()
-        town_weather = get_formed_weather_data(location.altitude, location.longitude)
-        town = Town(name=location.name,
-                    longitude=location.longitude,
-                    altitude=location.altitude,
+        town_weather = get_formed_weather_data(location.lat, location.lon)
+        town = Town(name=location.display_name,
+                    longitude=location.lon,
+                    altitude=location.lat,
                     weather_now=town_weather['weather_now'],
                     forecast=town_weather['forecast'])
         session = Session()

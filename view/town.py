@@ -39,20 +39,20 @@ async def create_town(town: TownName):
 
 @router.get('/api/town/{town_id}/')
 async def get_town(town_id: int):
-    town_json = TownLogic().get(town_id)
-    if town_json:
+    town = TownLogic().get(town_id)
+    if town:
         return JSONResponse(status_code=status.HTTP_200_OK,
-                            content=town_json)
+                            content=town.json())
     else:
         return await return_404_not_found(town_id)
 
 
 @router.put('/api/town/{town_id}/')
 async def update_town(town_id: int, town: TownName):
-    town_json = TownLogic().update(town_id, town)
-    if town_json:
+    town = TownLogic().update(town_id, town)
+    if town:
         return JSONResponse(status_code=status.HTTP_201_CREATED,
-                            content=town_json)
+                            content=town.json())
     else:
         return await return_404_not_found(town_id)
 

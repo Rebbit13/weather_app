@@ -18,19 +18,3 @@ services:
       - POSTGRES_PASSWORD
     ports:
       - '${POSTGRES_PORT}:5432'
-    volumes:
-      - ./postgresql/dumps:/code/dumps
-      - ./postgresql/data:/var/lib/postgresql/data
-
-  app:
-    build: .
-    ports:
-      - "${APP_PORT}:8000"
-    env_file:
-      - .env
-    links:
-      - "postgres:${APP_DB_HOST}"
-      - "redis:${APP_CASH_HOST}"
-    depends_on:
-      - postgres
-      - redis

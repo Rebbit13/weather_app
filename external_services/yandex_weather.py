@@ -39,5 +39,7 @@ def form_weather_data_from_json(json_dict: dict):
 
 
 def get_formed_weather_data(altitude: float, longitude: float):
-    json_dict = get_weather(WeatherLocation(altitude, longitude))
+    location = WeatherLocation.parse_obj({"altitude": altitude,
+                                          "longitude": longitude})
+    json_dict = get_weather(location)
     return form_weather_data_from_json(json_dict)
