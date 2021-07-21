@@ -1,5 +1,3 @@
-import json
-
 from geopy.geocoders import Nominatim
 
 from database.cash import cash
@@ -9,13 +7,13 @@ geo_locator = Nominatim(user_agent="evgeniy_weather")
 
 
 def search_location(search_data: str):
-    return LocationGet.parse_raw(geo_locator.geocode(search_data))
+    return LocationGet.parse_obj(geo_locator.geocode(search_data).raw)
 
 
 def get_from_cash(search_data: str):
     cashed = cash.get(search_data)
     if cashed:
-        return LocationGet.parse_raw(json.loads(cashed))
+        return LocationGet.parse_raw(cashed)
 
 
 def set_cash(search_data: str, location: LocationGet):
