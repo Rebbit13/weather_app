@@ -32,14 +32,24 @@ async def get_all_towns():
 
 @router.post('/api/town/')
 async def create_town(town: TownName):
-    town_json = TownLogic().create(town)
+    try:
+        town_json = TownLogic().create(town)
+    except ValueError as error:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST,
+                            content={"message": str(error)})
+
     return JSONResponse(status_code=status.HTTP_201_CREATED,
                         content=town_json)
 
 
 @router.get('/api/town/{town_id}/')
 async def get_town(town_id: int):
-    town = TownLogic().get(town_id)
+    try:
+        town = TownLogic().get(town_id)
+    except ValueError as error:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST,
+                            content={"message": str(error)})
+
     if town:
         return JSONResponse(status_code=status.HTTP_200_OK,
                             content=town.json())

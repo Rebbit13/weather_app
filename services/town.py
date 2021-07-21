@@ -68,6 +68,8 @@ class TownLogic(metaclass=SingletonNaiveMeta):
     @staticmethod
     def create(town: TownName):
         location = get_location(town.name)
+        if location is None:
+            return None
         duplicate = TownLogic.get_duplicate(location.display_name)
         if duplicate:
             return duplicate.json()

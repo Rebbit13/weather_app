@@ -7,7 +7,11 @@ geo_locator = Nominatim(user_agent="evgeniy_weather")
 
 
 def search_location(search_data: str):
-    return LocationGet.parse_obj(geo_locator.geocode(search_data).raw)
+    location = geo_locator.geocode(search_data)
+    if location:
+        return LocationGet.parse_obj(location.raw)
+    # TODO: manage without raise ValueError
+    raise ValueError(f'We cannot find place with name {search_data}')
 
 
 def get_from_cash(search_data: str):
