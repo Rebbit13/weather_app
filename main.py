@@ -1,12 +1,8 @@
-# TODO: debug redis connection
 from fastapi import FastAPI
 
-import view.town
-from services.town import TownLogic
+from view import town
 
 app = FastAPI()
-app.include_router(view.town.router)
-
-TownLogic().warm_the_cash()
+app.include_router(town.router)
 
 STATIC_PATH = 'static/'

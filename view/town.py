@@ -1,4 +1,3 @@
-# TODO: debug json serialization
 import logging
 
 from fastapi import APIRouter
@@ -8,7 +7,7 @@ from starlette import status
 from starlette.templating import Jinja2Templates
 
 from services.town import TownLogic
-from validation.town import TownCreate, TownUpdate
+from validation.town import TownName
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -24,7 +23,7 @@ async def return_404_not_found(town_id):
                         content={"message": f'There is no town with id {town_id}'})
 
 
-@router.get('/api/town/', response_model=TownCreate)
+@router.get('/api/town/')
 async def get_all_towns():
     result = TownLogic().get_all()
     return JSONResponse(status_code=status.HTTP_200_OK,
@@ -32,7 +31,7 @@ async def get_all_towns():
 
 
 @router.post('/api/town/')
-async def create_town(town: TownCreate):
+async def create_town(town: TownName):
     town_json = TownLogic().create(town)
     return JSONResponse(status_code=status.HTTP_201_CREATED,
                         content=town_json)
@@ -49,7 +48,7 @@ async def get_town(town_id: int):
 
 
 @router.put('/api/town/{town_id}/')
-async def update_town(town_id: int, town: TownUpdate):
+async def update_town(town_id: int, town: TownName):
     town_json = TownLogic().update(town_id, town)
     if town_json:
         return JSONResponse(status_code=status.HTTP_201_CREATED,

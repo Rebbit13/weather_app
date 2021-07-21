@@ -33,8 +33,8 @@ def form_weather_data_from_json(json_dict: dict):
     weather_now = str(weather_now_obj)
     forecast = "Прогноз:"
     for part in json_dict['forecast']['parts']:
-        forecast_for_part = Forecast.parse_obj(part)
-        forecast += str(forecast_for_part)
+        forecast_obj = Forecast.parse_obj(part)
+        forecast += str(forecast_obj)
     return {"weather_now": weather_now, "forecast": forecast}
 
 
